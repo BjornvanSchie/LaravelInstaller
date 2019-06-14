@@ -146,6 +146,8 @@ class EnvironmentManager
     public function clearEnvCache()
     {
         try{
+            Artisan::call('optimize');
+
             with(new Dotenv(app()->environmentPath(), app()->environmentFile()))->overload();
             with(new LoadConfiguration())->bootstrap(app());
 
