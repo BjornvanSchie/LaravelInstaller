@@ -1,5 +1,5 @@
 {
-    "name": "rachidlaasri/laravel-installer",
+    "name": "bjornvanschie/laravel-installer",
     "description": "Laravel web installer",
     "license": "MIT",
     "authors": [
@@ -10,6 +10,10 @@
         {
             "name": "Jeremy Kenedy",
             "email": "jeremykenedy@gmail.com"
+        },
+        {
+            "name": "Björn van Schie",
+            "email": "info@bjornvanschie.nl"
         }
     ],
     "require": {
@@ -17,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "RachidLaasri\\LaravelInstaller\\": "src/"
+            "BjornvanSchie\\LaravelInstaller\\": "src/"
         },
         "files": [
             "src/Helpers/functions.php"
@@ -26,7 +30,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "RachidLaasri\\LaravelInstaller\\Providers\\LaravelInstallerServiceProvider"
+                "BjornvanSchie\\LaravelInstaller\\Providers\\LaravelInstallerServiceProvider"
             ]
         }
     },
