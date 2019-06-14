@@ -1,9 +1,9 @@
 <?php
 
-namespace RachidLaasri\LaravelInstaller\Controllers;
+namespace BjornvanSchie\LaravelInstaller\Controllers;
 
 use Illuminate\Routing\Controller;
-use RachidLaasri\LaravelInstaller\Helpers\PermissionsChecker;
+use BjornvanSchie\LaravelInstaller\Helpers\PermissionsChecker;
 
 class PermissionsController extends Controller
 {
