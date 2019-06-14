@@ -20,28 +20,9 @@ class DatabaseManager
     {
         $outputLog = new BufferedOutput;
         
-        $this->clearEnvCache($outputLog);
         $this->sqlite($outputLog);
 
         return $this->migrate($outputLog);
-    }
-
-    /**
-     * Clear all cache related to the env file.
-     *
-     * @return array
-     */
-    public function clearEnvCache(BufferedOutput $outputLog)
-    {
-        try{
-            Artisan::call('config:clear', [], $outputLog);
-            Artisan::call('cache:clear', [], $outputLog);
-            Artisan::call('route:clear', [], $outputLog);
-            Artisan::call('view:clear', [], $outputLog);
-        }
-        catch(Exception $e){
-            return $this->response($e->getMessage(), 'error', $outputLog);
-        }
     }
 
     /**
