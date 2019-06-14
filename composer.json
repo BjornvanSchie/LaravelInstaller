@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "vlucas/phpdotenv": "2.6.x-dev"
+        "vlucas/phpdotenv": "2.6.x"
     },
     "autoload": {
         "psr-4": {
