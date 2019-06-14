@@ -19,10 +19,46 @@ class DatabaseManager
     public function migrateAndSeed()
     {
         $outputLog = new BufferedOutput;
-
+        
+        clearEnvCache();
+        setEnvCache();
         $this->sqlite($outputLog);
 
         return $this->migrate($outputLog);
+    }
+
+    /**
+     * Clear all cache related to the env file.
+     *
+     * @return array
+     */
+    public function clearEnvCache()
+    {
+        try{
+            Artisan::call('cache:clear', [], $outputLog);
+            Artisan::call('config:clear', [], $outputLog);
+            Artisan::call('route:clear', [], $outputLog);
+        }
+        catch(Exception $e){
+            return $this->response($e->getMessage(), 'error', $outputLog);
+        }
+    }
+
+    /**
+     * Set all cache related to the env file.
+     *
+     * @return array
+     */
+    public function setEnvCache()
+    {
+        try{
+            Artisan::call('config:cache', [], $outputLog);
+            Artisan::call('route:cache', [], $outputLog);
+            Artisan::call('optimize', [], $outputLog);
+        }
+        catch(Exception $e){
+            return $this->response($e->getMessage(), 'error', $outputLog);
+        }
     }
 
     /**
