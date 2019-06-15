@@ -5,7 +5,6 @@ namespace BjornvanSchie\LaravelInstaller\Helpers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Dotenv\Dotenv;
 use Illuminate\Foundation\Bootstrap\LoadConfiguration; 
 
 class EnvironmentManager
@@ -75,6 +74,8 @@ class EnvironmentManager
     {
         $message = trans('installer_messages.environment.success');
 
+        $this->setupAppCache();
+
         try {
             file_put_contents($this->envPath, $input->get('envConfig'));
         }
@@ -125,11 +126,10 @@ class EnvironmentManager
         'PUSHER_APP_KEY=' . $request->pusher_app_key . "\n" .
         'PUSHER_APP_SECRET=' . $request->pusher_app_secret;
 
-        $this->clearEnvCache();
+        $this->setupAppCache();
 
         try {
             file_put_contents($this->envPath, $envFileData);
-
         }
         catch(Exception $e) {
             $results = trans('installer_messages.environment.errors');
@@ -138,21 +138,16 @@ class EnvironmentManager
         return $results;
     }
 
-        /**
-     * Clear all cache related to the env file.
+    /**
+     * Initialize all cache for the website, so we can reload the env 
+     * file with the information in the next step.
      *
      * @return array
      */
-    public function clearEnvCache()
+    public function setupAppCache()
     {
         try{
             Artisan::call('optimize');
-
-            with(new Dotenv(app()->environmentPath(), app()->environmentFile()))->overload();
-            with(new LoadConfiguration())->bootstrap(app());
-
-            Artisan::call('config:clear');
-            Artisan::call('cache:clear');
         }
         catch(Exception $e){
              return $this->response($e->getMessage(), 'error');

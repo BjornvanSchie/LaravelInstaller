@@ -5,6 +5,8 @@ namespace BjornvanSchie\LaravelInstaller\Helpers;
 use Exception;
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Support\Facades\Artisan;
+use Dotenv\Dotenv;
+use Illuminate\Foundation\Bootstrap\LoadConfiguration; 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -20,6 +22,7 @@ class DatabaseManager
     {
         $outputLog = new BufferedOutput;
         
+        $this->reloadEnvCache();
         $this->sqlite($outputLog);
 
         return $this->migrate($outputLog);
@@ -92,6 +95,25 @@ class DatabaseManager
                 DB::reconnect(Config::get('database.default'));
             }
             $outputLog->write('Using SqlLite database: ' . $database, 1);
+        }
+    }
+
+    /**
+     * Reload the env file and clear all env related cache.
+     *
+     * @return array
+     */
+    public function reloadEnvCache()
+    {
+        try{
+            with(new Dotenv(app()->environmentPath(), app()->environmentFile()))->overload();
+            with(new LoadConfiguration())->bootstrap(app());
+
+            Artisan::call('config:clear');
+            Artisan::call('cache:clear');
+        }
+        catch(Exception $e){
+             return $this->response($e->getMessage(), 'error');
         }
     }
 }
