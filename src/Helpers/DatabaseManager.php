@@ -109,8 +109,7 @@ class DatabaseManager
             with(new Dotenv(app()->environmentPath(), app()->environmentFile()))->overload();
             with(new LoadConfiguration())->bootstrap(app());
 
-            Artisan::call('config:clear');
-            Artisan::call('cache:clear');
+            Artisan::call('config:cache');
         }
         catch(Exception $e){
              return $this->response($e->getMessage(), 'error');
