@@ -51,6 +51,16 @@ Route::group(['prefix' => 'install','as' => 'LaravelInstaller::','namespace' => 
         'uses' => 'FinalController@finish'
     ]);
 
+    Route::get('user', [
+        'as' => 'user',
+        'uses' => 'UserController@userMenu'
+    ]);
+
+    Route::post('saveuser', [
+        'as' => 'saveuser',
+        'uses' => 'UserController@saveUser'
+    ]);
+
 });
 
 Route::group(['prefix' => 'update','as' => 'LaravelUpdater::','namespace' => 'BjornvanSchie\LaravelInstaller\Controllers','middleware' => 'web'],function() {

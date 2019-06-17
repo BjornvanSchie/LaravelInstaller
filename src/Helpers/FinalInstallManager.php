@@ -19,7 +19,8 @@ class FinalInstallManager
 
         $this->generateKey($outputLog);
         $this->publishVendorAssets($outputLog);
-
+        $this->generateStoragelink($outputLog);
+        
         return $outputLog->fetch();
     }
 
@@ -35,6 +36,24 @@ class FinalInstallManager
             if (config('installer.final.key')){
                 Artisan::call('key:generate', ["--force"=> true], $outputLog);
             }
+        }
+        catch(Exception $e){
+            return static::response($e->getMessage(), $outputLog);
+        }
+
+        return $outputLog;
+    }
+
+    /**
+     * Generate the storage folder link.
+     *
+     * @param \Symfony\Component\Console\Output\BufferedOutput $outputLog
+     * @return \Symfony\Component\Console\Output\BufferedOutput|array
+     */
+    private static function generateStoragelink(BufferedOutput $outputLog)
+    {
+        try{
+            Artisan::call('storage:link', [], $outputLog);
         }
         catch(Exception $e){
             return static::response($e->getMessage(), $outputLog);

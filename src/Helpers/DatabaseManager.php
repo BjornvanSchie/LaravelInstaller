@@ -19,10 +19,11 @@ class DatabaseManager
      * @return array
      */
     public function migrateAndSeed()
-    {
-        $outputLog = new BufferedOutput;
-        
+    {       
         $this->reloadEnvCache();
+
+        $outputLog = new BufferedOutput;
+
         $this->sqlite($outputLog);
 
         return $this->migrate($outputLog);
